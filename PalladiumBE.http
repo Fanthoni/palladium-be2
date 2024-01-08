@@ -1,0 +1,6 @@
+@PalladiumBE_HostAddress = http://localhost:5206
+
+GET {{PalladiumBE_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
