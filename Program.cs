@@ -1,9 +1,18 @@
+using Microsoft.AspNetCore.Cors;
+
 var builder = WebApplication.CreateBuilder(args);
 
 AppConfig.LoadConfiguration();
 
 builder.Services.AddControllersWithViews();
 var app = builder.Build();
+
+app.UseCors(options =>
+{
+    options.WithOrigins(AppConfig.AllowedOrigin)
+           .AllowAnyMethod()
+           .AllowAnyHeader();
+});
 
 app.MapGet("/", () => "Hello Palladium API!");
 
