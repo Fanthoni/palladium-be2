@@ -1,10 +1,12 @@
 var builder = WebApplication.CreateBuilder(args);
+
+AppConfig.LoadConfiguration();
+
 builder.Services.AddControllersWithViews();
 var app = builder.Build();
-var startup = new Startup(builder.Configuration);
-
 
 app.MapGet("/", () => "Hello Palladium API!");
+
 
 if (!app.Environment.IsDevelopment())
 {
