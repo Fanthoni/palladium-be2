@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MongoDB.Driver;
-using DotNetEnv;
+using PalladiumBE.Utilities.AWS;
 
 namespace PalladiumBE.Controllers;
 
@@ -72,13 +72,13 @@ public class CatalogController : ControllerBase
     }
 
     [HttpPost("item/thumbnail", Name = "UploadItemThumbnail")]
-    public IActionResult UploadItemThumbnail(UploadItemThumbnailRequest request)
+    public async Task<IActionResult> UploadItemThumbnail(UploadItemThumbnailRequest request)
     {
         try
         {
             var filter = Builders<Item>.Filter.Eq("id", request.ItemId);
             var update = Builders<Item>.Update.Set("thumbnailImage", request.Image);
-            _database.GetCollection<Item>("Items").UpdateOne(filter, update);
+            await S3Helper.UploadImages(request.ItemId, [request.Image], "thumbnail");
             return Ok();
         }
         catch (Exception ex)
