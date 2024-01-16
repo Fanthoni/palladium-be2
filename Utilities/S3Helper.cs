@@ -31,7 +31,7 @@ static class S3Helper
         }
     }
 
-    public static async Task UploadImages (string itemId, string[] images, string? keyName) 
+    public static async Task UploadImages (string itemId, string[] images, string? keyName = null) 
     {
         var uploadTasks = new List<Task>();
 

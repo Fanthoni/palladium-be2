@@ -76,15 +76,31 @@ public class CatalogController : ControllerBase
     {
         try
         {
-            var filter = Builders<Item>.Filter.Eq("id", request.ItemId);
-            var update = Builders<Item>.Update.Set("thumbnailImage", request.Image);
+            // var filter = Builders<Item>.Filter.Eq("id", request.ItemId);
+            // var update = Builders<Item>.Update.Set("thumbnailImage", request.Image);
             await S3Helper.UploadImages(request.ItemId, [request.Image], "thumbnail");
-            return Ok();
+            return Ok("Thumbnail uploaded successfully");
         }
         catch (Exception ex)
         {
             _logger.LogError($"Error when uploading thumbnail: {ex.Message}");
             return StatusCode(500, "Internal Server Error");
         }
+    }
+
+    [HttpPost("item/pictures", Name = "UploadItemPictures")]
+    public async Task<IActionResult> UploadItemThumbnail(UploadPicturesRequest request)
+    {
+        try
+        {
+            await S3Helper.UploadImages(request.ItemId, request.Images);
+            return Ok("Pictures are uploaded successfully");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error when uploading pictures: {ex.Message}");
+            return StatusCode(500, "Internal Server Error");
+        }
+
     }
 }
