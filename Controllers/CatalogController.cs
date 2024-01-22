@@ -62,6 +62,12 @@ public class CatalogController : ControllerBase
         {
             var filter = Builders<Item>.Filter.Eq("catalogId", catalogId);
             var items = _database.GetCollection<Item>("Items").Find(filter).ToList();
+
+            foreach (var item in items)
+            {
+                item.thumbnailUrl = S3Helper.RetrieveThumbnailImage(item.id);
+            }
+
             return Ok(items);
         }
         catch (Exception ex)
@@ -76,9 +82,7 @@ public class CatalogController : ControllerBase
     {
         try
         {
-            // var filter = Builders<Item>.Filter.Eq("id", request.ItemId);
-            // var update = Builders<Item>.Update.Set("thumbnailImage", request.Image);
-            await S3Helper.UploadImages(request.ItemId, [request.Image], "thumbnail");
+            await S3Helper.UploadImages(request.ItemId, [request.Image], keyName: "thumbnail");
             return Ok("Thumbnail uploaded successfully");
         }
         catch (Exception ex)
@@ -88,12 +92,27 @@ public class CatalogController : ControllerBase
         }
     }
 
-    [HttpPost("item/pictures", Name = "UploadItemPictures")]
+    [HttpGet("item/{itemId}/photos", Name = "GetItemPhotos")]
+    public async Task<IActionResult> GetItemPhotos(string itemId)
+    {
+        try
+        {
+            var photos = await S3Helper.RetrieveItemPhotos(itemId);
+            return Ok(photos);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error when uploading photos: {ex.Message}");
+            return StatusCode(500, "Internal Server Error");
+        }
+    }
+
+    [HttpPost("item/photos", Name = "UploadItemPhotos")]
     public async Task<IActionResult> UploadItemThumbnail(UploadPicturesRequest request)
     {
         try
         {
-            await S3Helper.UploadImages(request.ItemId, request.Images);
+            await S3Helper.UploadImages(request.ItemId, request.Images, "photos");
             return Ok("Pictures are uploaded successfully");
         }
         catch (Exception ex)

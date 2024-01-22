@@ -1,5 +1,6 @@
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson;
+using Microsoft.Net.Http.Headers;
 
 namespace PalladiumBE;
 
@@ -12,7 +13,7 @@ public class Item
     public string cashPrice { get; set; }
     public string thickness { get; set; }
     public string catalogId {get; set;}
-    public string thumbnailImage { get; set; }
+    public string thumbnailUrl {get; set;} = String.Empty;
 
     public string? surface { get; set; }
     public string? finish { get; set; }
