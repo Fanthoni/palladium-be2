@@ -56,7 +56,7 @@ static class S3Helper
         }
         catch (AmazonS3Exception ex)
         {
-            Console.WriteLine($"Error uploading file to S3: {ex.Message}");
+            Console.WriteLine($"Error retrieving photos from S3: {ex.Message}");
             return new List<string>();
         }        
     }
