@@ -82,7 +82,7 @@ public class CatalogController : ControllerBase
     {
         try
         {
-            await S3Helper.UploadImages(request.ItemId, [request.Image], keyName: "thumbnail");
+            await S3Helper.UploadImages(request.ItemId, new[] { request.Image }, keyName: "thumbnail");
             return Ok("Thumbnail uploaded successfully");
         }
         catch (Exception ex)
