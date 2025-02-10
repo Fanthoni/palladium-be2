@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
+      <LangVersion>preview</LangVersion> <!-- or <LangVersion>12.0</LangVersion> if available -->
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>true</InvariantGlobalization>
