@@ -20,7 +20,7 @@ app.MapGet("/", () => "Hello Palladium API!");
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    builder.WebHost.UseUrls("http://*:" + Environment.GetEnvironmentVariable("PORT"));
+    builder.WebHost.UseUrls("http://*:" + Environment.GetEnvironmentVariable("PORT") ?? "5206");
     app.UseHsts();
 }
 
